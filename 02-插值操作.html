@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>插值操作  v-once ...</title>
+    
+</head>
+<body>
+    <script src="../..//vue.js"></script>
+    <div id="app">
+        <!-- 
+            1. v-for:="item in students"
+         -->
+        <div>v-for 循环:  <span v-for="item in students">{{item + '-'}}</span></div>
+
+        <!-- 
+            2. v-once : 数据在往后的操作中都不会被修改
+                1. 如 ： 在浏览器开发者模式 修改 app.once="hhh", 页面中的{{once}}显示的内容不会发生改变       
+         --> 
+        <div>v-once :   <span v-once>{{once}}</span></div>
+        <!-- 
+            3. v-html : 
+                将数据url 以html的标签值形式显示, 隐藏标签
+            -->
+        <div>正常显示:  <span >{{url}}</span></div>
+        <div>v-html:  <span v-html="url"></span></div>
+        <!-- 
+            4.  v-text :  显示文本
+            与{{}} 语法相同， 但不够灵活 => 一下 标签内的文本将不会显示, 而{{}}语法则正常拼接
+         -->
+        <div v-text="message">,你好啊</div>
+        <div >{{message}},你好啊</div>
+        <!-- 
+            5. v-pre  保留 预先输出格式
+         -->
+         <div>{{message}}</div>
+         <div v-pre>{{message}}</div>
+         <!-- 
+             6. v-cloak  斗篷
+                 在vue 解析之前， div中有一个属性v-cloak
+                 在vue 解析之后， div中没有一个属性v-cloak
+                1. 斗篷的作用：  
+                    1. 当浏览器加载页面 , vue 解析未结束前， 执行 v-cloak 属性
+                    2. 当浏览器加载 vue解析后， v-cloack属性将删除
+
+                // 假装以下样式在 <head>处
+                <style>
+                    [v-cloak] {
+                        display: none;
+                    }
+                </style>
+            -->
+            <div >{{message}}</div>
+    </div>
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                message: 'hellow',
+                once: '一次',
+                students: ['小明','小红', '小兰'],
+                url: '<a href="www.baidu.com">百度一下</a>'
+            }
+        })
+    </script>
+</body> 
+</html>
