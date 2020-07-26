@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vue 入门</title>
+</head>
+<body>
+    <script src="../vue.js" type="text/javascript"></script>
+    <!-- 
+        1. Vue 初体验: 创建一个hellow文件
+            1. 创建html 文件， 使用内联模式引入 vue.js文件
+            2. 创建一个ID 为 app 的div元素
+                1. 在<script> 标签内 创建一个常量 app ， 将创建的vue实例赋值给常量 
+                    1. el => element 元素
+                    2. data 在此处 与模块的data(){return {}}  不同
+                    3. vue实例的数据是响应式的
+                    4. 在html标签内 使用数据 使用双括号 {{}}
+      -->
+    <div id="app">
+        {{message}}
+    </div>
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data: {
+                message: "hellow"
+            }
+        })
+    </script>
+    <!-- 
+        2. 使用循环 v-for 
+            1. 创建 vue实例， 绑定元素 circulation  => 循环
+            2. v-for 的值 中， 多个单词用逗号隔开， 并使用括号v-for="(item, index) in move"
+     -->
+     <div id="circulation">
+        <ul>
+            <li v-for="(item, index) in move" :key="index">{{item}}</li>
+        </ul>
+    </div>
+    <script>
+        const circulation = new Vue({
+            el: "#circulation",
+            data: {
+                move: ['奥特曼', '哪吒','娜扎','娃哈哈']
+            }
+        })
+    </script>
+</body>
+</html>
