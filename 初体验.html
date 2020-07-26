@@ -6,7 +6,7 @@
     <title>vue 入门</title>
 </head>
 <body>
-    <script src="../vue.js" type="text/javascript"></script>
+    <script src="../../vue.js" type="text/javascript"></script>
     <!-- 
         1. Vue 初体验: 创建一个hellow文件
             1. 创建html 文件， 使用内联模式引入 vue.js文件
@@ -14,14 +14,14 @@
                 1. 在<script> 标签内 创建一个常量 app ， 将创建的vue实例赋值给常量 
                     1. el => element 元素
                     2. data 在此处 与模块的data(){return {}}  不同
-                    3. vue实例的数据是响应式的
+                    3. vue实例的数据是响应式的  =>?  当在页面开发者工具consle处 修改 app.data.message 的值后， 页面  message 的值也会跟着修改
                     4. 在html标签内 使用数据 使用双括号 {{}}
       -->
     <div id="app">
         {{message}}
     </div>
     <script>
-        // const 倡廉个   let 变量
+        // const 常量   let 变量
         const app = new Vue({
             el: "#app",
             data: {
@@ -47,5 +47,40 @@
             }
         })
     </script>
+
+    <!-- 
+        3. 点击按钮 修改 count 的值
+            1. 创建computed元素
+            2. 班定 count 数据
+            3. 添加methods 方法， 使用 v-on:click 方法  语法糖：@
+     -->
+     <div id="computed">
+        <div>
+            <p>{{count}}</p>
+            <button @click="increase">+</button><button v-on:click="decrease">-</button>
+        </div>
+    </div>
+    <script>
+        const computed = new Vue({
+            el: "#computed",
+            data: {
+                count: 1
+            },
+            methods: {
+                // increase 增加  decrease 减少
+                // 下面的方法为 ES6写法 increase() {}  ===    increase: function() {}
+                increase() {
+                    this.count++
+                },
+                decrease: function() {
+                    this.count--
+                }
+            }
+        })
+    </script>
+        <!--
+            4.  MVVM  =>  model  view  view-model  数据， 视图， 视图模型 
+        -->
+
 </body>
 </html>
