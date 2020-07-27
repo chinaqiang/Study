@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>插值操作  v-once ...</title>
+    <style>
+        .box {
+            border: 1px solid #000;
+            padding: 20px;
+        }
+        .active {
+            color: #f00;
+        }
+    </style>
     
 </head>
 <body>
@@ -52,6 +61,17 @@
                 </style>
             -->
             <div >{{message}}</div>
+            <!-- 
+                7. 使用 v-bind 与 v-for 结合实现， 点击某一个值， 该值颜色变红
+                    1. v-for 语句拥有index属性值
+                        1. 动态绑定class, 当设置的currentIndex 值 全等于index  时，active为真
+                        2. 交互方法： 修改currentIndex 的值 = index
+             -->
+             <div class="box">
+                <ul>
+                    <li v-for="(item, index) in students" @click="btnclick(index)" :key="index" :class="{active: currentIndex === index}">{{item}}</li>
+                </ul>
+             </div>
     </div>
     <script>
         const app = new Vue({
@@ -60,8 +80,17 @@
                 message: 'hellow',
                 once: '一次',
                 students: ['小明','小红', '小兰'],
-                url: '<a href="www.baidu.com">百度一下</a>'
+                url: '<a href="www.baidu.com">百度一下</a>',
+                isActive: true,
+                currentIndex: 0
+            },
+            methods: {
+              btnclick(index) {
+                  return this.currentIndex = index
+              }
             }
+        
+            
         })
     </script>
 </body> 

@@ -22,7 +22,8 @@
         -->    
         <a v-bind:href="url">百度一下</a>
         <!-- 
-            2 .对象语法： :class="{active:isActive}   对象内可使用表达式或使用键值对{active:false, line:true}
+            2 .对象语法： :class="{active:isActive}   
+                           对象内可使用表达式或使用键值对{active:false, line:true}
          -->
         <p :class="{active:isActive}">动态修改文字颜色</p>
         <p :class="{active:false, line:true}">添加键值对</p>
@@ -34,6 +35,15 @@
             4.  使用方法 ：  getClass()  ， 添加了括号代表立即执行
          -->
          <h1 :class="getClass()">修改类名</h1>
+        <!-- 
+            5.  使用动态绑定 <style> 
+                1. 对象语法
+                    1. :style="{fontSize: '50px'}"
+                    2. :style="{fontSize: finalSize + 'px'}"   => 此处finalSize 是data内的一个数据
+                    3. :style="{'font-size': finalSize + 'px}'"
+                2. 数组语法
+                    1.  :style="[baseStyle, baseStyle1]"
+          -->
     </div>
 
     <script>
@@ -43,7 +53,10 @@
                 url: 'www.baidu.com',
                 isActive: true,
                 info_a: 'aaa',
-                info_b: 'bbbb'
+                info_b: 'bbbb',
+                finalSize: 100,
+                baseStyle: {background: 'red'},
+                baseStyle1: {color: '#f00'}
             },
             methods: {
                 btnClick() {

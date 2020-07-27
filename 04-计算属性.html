@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用计算属性computed</title>
+</head>
+<body>
+    <script src="../../vue.js"></script>
+    <div id="app">
+        <!-- 
+            1. methods 方法 => 每次调用都会刷新页面
+            2. computed 计算属性 ，
+                1. 有缓存,  每次调用时，当数据没有变化时， 将最后一次修改的结果返回
+                2.  执行computed属性， 无需使用括号, 直接以数据的形式传入 mustan语法
+                3. 当computed 修改了数据后， 缓存将会清空
+         -->
+         <p>总价格： {{totalPrice}}</p>
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: '#app',
+            data: {
+                books: [
+                    {id: 1, name: 'html', price: 10},
+                    {id: 2, name: 'java', price: 20},
+                    {id: 3, name: 'css', price: 30},
+                    {id: 4, name: 'python', price: 40}
+                ]
+            },
+            computed: {
+                totalPrice() {
+                    let result = 0
+                    // for (let i in this.books) {
+                    // for (let i of this.books) {
+                    for (let i=0; i<this.books.length; i++) {
+                        result += this.books[i].price
+                    }
+                    return result
+                }
+            }
+        })
+    </script>
+
+    <div id="computed">
+        {{fullName}}
+    </div>
+    <script>
+        const info_com = new Vue({
+            el: '#computed',
+            data: {
+                first_name: 'kobe',
+                last_name: 'jenny'
+            },
+            computed: {
+                //  计算属性是一个对象， 对象内有set和get 两个函数方法，
+                        // 每次调用都会执行set , get 而set方法一般很少使用， 则演变成了
+                        //直接将get set 隐藏 ， fullName : function() {} => fullName(){}
+                fullName: {
+                    set: function(info_value) {
+                        //console.log('0000', info);  每次行计算属性都会执行set方法 
+                        // 当开发者模式 修改 info_com.fullName= 'hha hahha' 时， 页面的fullName值将会改变
+                        const names = info_value.split(' ')
+                        this.first_name = names[0]
+                        this.last_name = names[1]
+                    },
+                    get: function() {
+                        return this.first_name + " " + this.last_name
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>

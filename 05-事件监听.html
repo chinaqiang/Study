@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件监听v-on</title>
+</head>
+<body>
+    <div id='app'>
+    <!-- 
+        1. 当方法没有添加括号时， 触发后会返回一个event 值
+     -->
+    <button @click="btnClick">按钮1</button>
+    <!-- 
+        1.当添加了括号()  却没有传参， 则会输出 undefine
+     -->
+    <button @click="btnClick1()">按钮2</button>
+    <!-- 
+        1. 当函数由多个形参， 而调用函数传入实参的个数不够时， 未传入的形参将会输出undefine，
+        2. 若要获取event,  则 $event 需要跟在形参的最后
+        3. 当形参传入没有使用 引号时， 默认调用 data中的数据
+     -->
+    <button @click="btnClick2('index',$event)">按钮3</button>
+    <button @click="btnClick2(index,$event)">按钮4</button>
+    </div>
+     
+    <script src='../../vue.js'></script>
+    <script>
+    const app = new Vue ({
+       el: '#app',
+       data : {
+           message: 'hah',
+           index: 5
+       },
+       methods: {
+           btnClick() {
+               console.log(event)
+           },
+           btnClick1(info_index) {
+               console.log(info_index);
+           },
+           btnClick2(info_index, event) {
+               console.log(info_index, event);
+           }
+       }
+    });
+    </script>
+</body>
+</html>

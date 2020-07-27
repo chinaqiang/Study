@@ -63,14 +63,15 @@
      <div id="computed">
         <div>
             <p>{{count}}</p>
-            <button @click="increase">+</button><button v-on:click="decrease">-</button>
+            <button @click="increase">+</button><button v-on:class="decrease">-</button>
         </div>
     </div>
     <script>
         const computed = new Vue({
             el: "#computed",
             data: {
-                count: 1
+                count: 1,
+                currentIndex: 0
             },
             methods: {
                 // increase 增加  decrease 减少
