@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-on 事件 使用修饰符</title>
+</head>
+<body>
+    <script src='../../vue.js'></script>
+    <div id='app'>
+        <div>
+            <p>{{message}}</p>
+            <!-- 
+                1. @click.stop  事件冒泡： 
+                    1. 当父按钮不使用修饰符.stop时， 点击按钮将会触发父元素的parentBtn() 执行
+                    2. .stop 阻止事件冒泡
+             -->
+            <div @click="parentBtn">
+                <button @click.stop="childBtn">父按钮</button>
+            </div>
+            <!-- 
+                2. @click.prevent 的使用
+                    2. 当不使用 .prevent 修饰符时， 点击按钮将会提交并跳转页面  
+                    1.  使用了修饰符后， 将会提交数据 并阻止页面跳转
+             -->
+             <div>
+                 <input type="submit" value="提交" @click="childBtn">
+             </div>
+             <!-- 
+                3. @click.enter 键盘监听
+                4. @click.once 事件只允许触发一次
+              -->
+
+        </div>
+    </div>
+     
+    <script>
+    const app = new Vue ({
+       el: '#app',
+       data : {
+           message: 'hah' 
+       },
+       methods: {
+           parentBtn() {
+               console.log('parent')
+           },
+           childBtn() {
+               console.log('children')
+           }
+       }
+    });
+    </script>
+</body>
+</html>

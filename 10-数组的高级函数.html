@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用高阶函数 filter/ map / reduce  </title>
+</head>
+<body>
+    <script>
+        // 条件一： 在一个数组中， 将小于100的值取出
+        var arr = [5,30,100,55,90,101,102,300,1055,105,1111,1422,1];
+        var arr1 = []
+        for(var i=0; i<arr.length;i++) {
+            if(arr[i] <= 100) {
+                arr1.push(arr[i])
+            }
+        }
+        console.log(arr1);
+        // 条件二： 将取出的值全部 *2
+        var arr2 = [];
+        for(var j=0; j<arr1.length;j++) {
+            arr2.push(arr1[j] *2)
+        }
+        console.log(arr2);
+        // 条件三： 将取出的值*2后汇总
+        var sum=0;
+        // for (var b=0; b<arr2.length;b++) {
+        for(var b of arr2){
+            sum+= b
+        }
+        console.log(sum);
+
+        /*
+            以原生的方法将以上三个条件输出， 语句太过于麻烦， 而是用封装好的高阶函数，则更加简洁
+            1. 使用链式调用 同时执行三个条件语法
+
+            2. 
+                flite() 起到过滤的效果， 将执行条件返回
+                map()  起到加工的作用。 将返回的值 进行*2 加工
+                reduce() 功能最强大
+
+        */
+        let newarr = [];
+        let total = arr.filter(function(i) {
+            return i <= 100
+        }).map(function(i){
+            return i*2
+        }).reduce(function(prevalue,i){
+            return prevalue + i
+        },0)
+        // console.log(arr)
+        console.log(total)
+
+        let newarr2 = [];
+        let totalNum = arr.filter(i => i<=100).map(i => i*2).reduce((prevalue, i) => prevalue + i)
+        console.log(totalNum)
+
+    </script>
+</body>
+</html>

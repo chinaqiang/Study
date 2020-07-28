@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用所学的知识创建一个图书购物车</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: #f6f6f6;
+        }
+        #app {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 200px;
+        }
+        .table {
+            width: 700px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+        
+        .table td {
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        .table thead tr td {
+            font-weight: bold;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id='app'>
+        <!-- 当 books 这个数组的长度大于0 则条件成立显示 购物栏， 否则将执行 v-else 语句 -->
+        <div v-if="books.length">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td class="index"></td>
+                        <td class="books_name">名称</td>
+                        <td class="books_time">出版日期</td>
+                        <td class="books_price">价格</td>
+                        <td class="books_count">数量</td>
+                        <td class="book_delete">移除</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- 
+                        1. v-for 循环遍历， 多个值 使用逗号隔开，并在括号内
+                     -->
+                    <tr v-for="(item, index)  in books">
+                        <td>{{item.index}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.time}}</td>
+                        <!-- 
+                            1. fullToFix 是一个过滤器语句
+                                相等于 {{"￥ " + item.price.toFixed(2)}}
+                            2. 过滤器有形参 price, 使用时无需传入实参
+                         -->
+                        <td>{{item.price | fullToFix}}</td>
+                        <td>
+                            <!-- 
+                                1. 使用index 来确定当前所点击的按钮属于第几行
+                                2. :disable 语句执行的条件时当 书本的个数等于0时， 按钮不可点击
+                             -->
+                            <button @click="decreament(index)" :disabled="item.count === 0">-</button>{{item.count}}<button @click="increament(index)">+</button>
+                        </td>
+                        <td><button @click="btnClick(index)">移除</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="totalprice">
+                <p>总价格： {{totalPrice | fullToFix}}</p>
+            </div>
+            </div>
+            <div v-else>
+                <p>您的购物车为空</p>
+            </div>
+        </div>
+     
+    <script src='../../vue.js'></script>
+    <script>
+    const app = new Vue ({
+       el: '#app',
+       data : {
+            books: [
+                {
+                    index: 1,
+                    name: 'java',
+                    time: '2020-1',
+                    price: 10,
+                    count: 1
+                },
+                {
+                    index: 1,
+                    name: 'javascript',
+                    time: '2020-1',
+                    price: 20,
+                    count: 1
+                },
+                {
+                    index: 1,
+                    name: 'c++',
+                    time: '2020-1',
+                    price: 30,
+                    count: 1
+                },
+                {
+                    index: 1,
+                    name: 'html',
+                    time: '2020-1',
+                    price: 40,
+                    count: 1
+                }
+            ]
+       },
+       computed: {
+          totalPrice() {
+              let sum = 0;  
+              for( let i in this.books) {
+                sum+= this.books[i].price * this.books[i].count
+              }
+              return sum
+          }  
+       },
+       methods: {
+           increament(index) {
+               /*
+                  1. 操作的是books 这个数组内的count 值， 最终值要返回给这个数组中的某行的count
+                  2. 若 要多此一举
+                        @click="increament(item.count)"
+                        increament(num) {
+                            num++;
+                            this.books.count = num;
+                        }
+
+
+               */
+               this.books[index].count++
+           },
+           decreament(index) {
+               this.books[index].count--
+           },
+           btnClick(index) {
+            // 删除数组的某一行， 使用splice()
+               this.books.splice(index, 1)
+           }
+       },
+       filters: {
+           fullToFix(price) {
+               return  '￥ ' + price.toFixed(2) 
+           }
+       }
+    });
+    </script>
+</body>
+</html>

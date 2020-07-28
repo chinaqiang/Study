@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>组件化思想</title>
+    <style>
+        #app {
+            width: 100%;
+            height: 100px;
+            background: #ccc;
+        }
+        #banner {
+            width:  100%;
+            height: 100px;
+            margin-top: 100px;
+            background: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+        组件： 
+            1. 将一个模版封装成模块， 在多个地方使用。  =>  建立一次， 多次使用
+            2. 便于维护, 对于后期的修改较友好
+
+        1. 全局组件： 
+            1. 创建模版
+                1. 在Vue 实例之间 使用 Vue.extend(模版)
+                    1. extend() 值 可以使用 `template: html元素`  在extend 内创建模版
+                    2. extend() 值 可以使用 ``template: htmlID    在HTML中创建模版， 使用id值绑定
+                        1. HTML中使用 <template  id="tel">...元素内容</template> 
+                        2. extend(`template: "#tel"`)
+                        
+                        1. HTML 中使用<script>
+            2. 注册组件
+                1. Vue.component('HTML中使用的标签名', 注册时赋值的常量)
+            3. 使用组件  挂载到 vue 实例上
+                1. 因注册的是全局组件， 则可在各个实例中 使用 所注册的标签名调用 
+                2. 若在Vue实例外使用， 则是个无效的标签
+
+            4. 组件注册的语法糖语法： 
+                1. 不使用 Vue.extend() 方法， 直接将 模版放置 components属性内， 
+                    components: {
+                        template: `<div>...</div>`
+                    }
+
+        2. 局部组件： 
+            1. 创建模版
+                1. 模版的创建方法 与 全局组件一样
+                2. 创建一个 .vue 文件， 并将接口导出  
+                     1.  export {组件名}  => 调用时必须使用这个组件名                         
+                     2.  export default {组件名}  => 调用时可使用自主创建的组件名
+            2. 注册组件
+                1. 方法一： 注册的方式和全局组件一致
+                2。方法二： 
+                    1. 调用导出的接口 使用 import 组件名 from 文件路径  (若是在某个子组件中调用， 则需要在该组件的script 标签内 引用接口)
+                    2. 在Vue 实例中 使用 components 属性 添加
+            3. 使用组件 (只允许在注册的Vue实例中使用)
+
+
+        3. 父组件与子组件
+            1. 父组件中插入子组件: 
+                 1. 在父组件的 模版内使用 子组件的元素名
+                 2. 并在父组件的conponents 属性中注册子组件
+                 3. 子组件的创建要在父组件之前， javascript 是循规蹈矩， 由上至下运行， 
+                    当子组件在父组件之后创建，父组件注册的组件将无法获取到子组件的信息，发生错误
+
+        
+     -->
+
+    <div id='app'>
+        <cpn/>
+    </div>
+    <div id='banner'>
+        <cpn/>
+    </div>
+    <script src='../../vue.js'></script>
+    <script>
+    
+    //创建子组件， 并在父组件中使用
+    const cpn_child = Vue.extend({
+        template: '<div>我是子组件</div>'
+    })
+
+    
+    // 父组件
+    const cpm = Vue.extend({
+        template: `
+            <div> 
+                <p>插入模版</p>
+                <cpn_child/>    
+            </div>
+            
+        `,
+        components: {
+            cpn_child
+        }
+    })
+    
+
+    Vue.component('cpn', cpm)
+    // 创建 Vue 实例 app
+    const app = new Vue ({
+       el: '#app',
+       data : {
+           message: 'hah' 
+       }
+    });
+    // 创建实例  banner 
+    const banner = new Vue({
+        el: '#banner'
+    })
+    </script>
+</body>
+</html>

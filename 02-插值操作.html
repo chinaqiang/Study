@@ -60,18 +60,19 @@
                     }
                 </style>
             -->
-            <div >{{message}}</div>
-            <!-- 
-                7. 使用 v-bind 与 v-for 结合实现， 点击某一个值， 该值颜色变红
-                    1. v-for 语句拥有index属性值
-                        1. 动态绑定class, 当设置的currentIndex 值 全等于index  时，active为真
-                        2. 交互方法： 修改currentIndex 的值 = index
-             -->
-             <div class="box">
-                <ul>
-                    <li v-for="(item, index) in students" @click="btnclick(index)" :key="index" :class="{active: currentIndex === index}">{{item}}</li>
-                </ul>
-             </div>
+        <div >{{message}}</div>
+        <!-- 
+            7. 使用 v-bind 与 v-for 结合实现， 点击某一个值， 该值颜色变红
+                1. v-for 语句拥有index属性值
+                    1. 动态绑定class, 当设置的currentIndex 值 全等于index  时，active为真
+                    2. 交互方法： 修改currentIndex 的值 = index
+        -->
+        <div class="box">
+            <ul>
+                <li v-for="(item, index) in students" @click="btnclick(index)" :key="index" :class="{active: currentIndex === index}">{{item}}</li>
+            </ul>
+        </div>
+        
     </div>
     <script>
         const app = new Vue({

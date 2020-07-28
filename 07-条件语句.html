@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-if  v-show</title>
+</head>
+<body>
+    <!-- 
+        v-if :  操作dom,  当元素消失再次显示时， 页面重新渲染,并加载页面，增加了 性能负担
+        v-shop: 操作样式 ， 生成占位符， 当v-shop="false", 元素隐藏， 相反， 元素显示， 页面不会重新加载
+        key : 
+     -->
+     <div id='app'>
+
+        <span v-if="isActive">
+            <p>用户名 :  <input type="text" id="info_text" placeholder="用户"></p>
+        </span>
+        <span v-else>
+            <p>邮箱： <input type="text" id="info_email" placeholder="邮箱"></p>
+        </span>
+        <button @click="btnClick">切换</button>
+    </div>
+     
+    <script src='../../vue.js'></script>
+    <script>
+    const app = new Vue ({
+       el: '#app',
+       data : {
+           message: 'hah' ,
+           isActive: true
+       },
+       methods: {
+           btnClick() {
+                this.isActive = !this.isActive
+           }
+       }
+    });
+    </script>
+</body>
+</html>

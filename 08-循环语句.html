@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-for 循环语句</title>
+</head>
+<body>
+    <!-- 
+        v-for :  
+            1. item => 元素
+            2. index = > 索引
+            3. value => 值
+            4. key 属性 ： 高效的更新 虚拟DOM
+
+            diff 算法 = 》  different 不同
+
+        Array: 数组的方法
+            1. arr.pop()  删除最后一个值
+            2. arr.push(value) 在最后一个值添加
+            3. arr.shift(value)  删除第一个值
+            4. arr.unshift()    在最前面添加值
+            5. arr.concat(arr)  拼接数组
+            6. arr.join('符号')  在数组的值与值之间使用 符号拼接
+            7. arr.splic()
+            8. arr.sort()  
+            9. arr.reverse()  倒叙
+
+     -->
+    <div id='app'>
+    </div>
+     
+    <script src='../../vue.js'></script>
+    <script>
+        // 形参 ...num   代表剩余参数， 可在数组中使用 , === arguments
+        function  computed(...num) {
+            let sum = 0;
+            return sum +=num;
+        }
+        console.log(computed(10,20,30,10,40,20))
+    const app = new Vue ({
+       el: '#app',
+       data : {
+           message: 'hah' 
+       }
+    
+    });
+    </script>
+</body>
+</html>
