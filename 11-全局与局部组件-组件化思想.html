@@ -32,7 +32,7 @@
                         1. HTML中使用 <template  id="tel">...元素内容</template> 
                         2. extend(`template: "#tel"`)
                         
-                        1. HTML 中使用<script>
+                        1. HTML 中使用<script type="text/x-template">
             2. 注册组件
                 1. Vue.component('HTML中使用的标签名', 注册时赋值的常量)
             3. 使用组件  挂载到 vue 实例上
@@ -67,10 +67,50 @@
                     当子组件在父组件之后创建，父组件注册的组件将无法获取到子组件的信息，发生错误
 
         
+        4. 组件属性: 
+            1. data  =>  组件中的data属性必须是个函数， 函数的值是独立的  data(){}
+            2. props:  父传子     (properties 属性)
+                1. 父组件 内 创建数据 =>  在data:{move:['海王','海贼王 ',' 电影']} 中创建数据
+                2. 子组件创建props 属性，设置要使用的值， 在父组件模版中 传入值给子组件
+                    1. 使用数组： 
+                        1. 子组件属性 props: ['cmove', 'cmessage']  => 创建要获取数据的名称
+                        2. 在父组件的模版中，动态传递数据
+                            1. <cpn :cmove="move" :cmessage="message"></cpn>  (cpn 是子组件的元素名)
+                            2. 在子组件的模版内就是使用数据
+                                1. <template> <p>{{cmessage}} {{cmove}}</p></template>
+                    2. 使用对象： 
+                        1. 子组件属性 props: {
+                                                cmessage: {type: String, default: aaa},
+                                                cmove: {type: Array, required: true}  
+                                                                    => required 必传属性，否则报错
+                                                ** 当获取传递值的类型为对象或数组时，默认值必须是个函数， 否则会报错
+                                                **  default (){
+                                                        return []
+                                                    }
+                                              }
+          
+                        2. 在父组件的模版中，动态传递数据
+                            1. <cpn :cmove="move" :cmessage="message"></cpn>  (cpn 是子组件的元素名)
+                            2. 在子组件的模版内就是使用数据
+                                1. <template> <p>{{cmessage}} {{cmove}}</p></template>
+
+                        3. 当props 使用驼峰标识时， props: ['strStr']
+                           在模版中的使用必须将 驼峰形式以 '-' 拼接的方式输出 => html 解析dom无法识别驼峰
+                            如：  <cpn :cstr-str="str">  而使用mus语法则无需转换 <p>{{strStr}}</p> 
+            3. $emit()  子传父
+                1. 子组件创建数据 data(){ books: [....]}
+                2. 子组件模版创建按钮 , <button @click="btnClick(item)" v-for="item in books">{{item}}
+                3. 子组件methods属性创建方法 发射数据给父组件
+                    1. methods: { btnClick(item){this.$emit('childbtn', item)}}
+                    2. ↑ 'childbtn' 是自定义方法名，  item 是数据本身event
+                4. 父组件模版
+                    1. 父组件methods 属性创建btnClick的方法
+                    2. 在子组件 标签<cpn @childbtn="btnClick">   👈 @childbtn 是子组件发射来的方法
+
      -->
 
     <div id='app'>
-        <cpn/>
+        <cpn :cmove="move" :cmessage="message" @childbtn="btnClick"></cpn>
     </div>
     <div id='banner'>
         <cpn/>
@@ -80,31 +120,90 @@
     
     //创建子组件， 并在父组件中使用
     const cpn_child = Vue.extend({
-        template: '<div>我是子组件</div>'
+        template: '<div>我是子组件</div>',
+        // methods: {
+        //     btnClick(item){
+        //         // 按钮点击， 子组件发射一个自定义名为 'childBtn'的方法， 并将item传送回去给父组件
+        //         this.$emit('childbtn', item);
+        //     }
+        // }
+ 
     })
-
-    
-    // 父组件
+    // 父组件 
     const cpm = Vue.extend({
         template: `
             <div> 
                 <p>插入模版</p>
+                <p>{{cmove}}</p>
+                <p>{{cmessage}}</p>
+                <div>
+                    <button @click="btnClick(item)" v-for="item in books">{{item.name}}</button>
+                </div>
                 <cpn_child/>    
             </div>
-            
         `,
         components: {
             cpn_child
+        },
+        data(){
+            return {
+                books: [
+                    {
+                        id:1,
+                        name: '按钮1'
+                    }, {
+                        id:2,
+                        name: '按钮2'
+                    },
+                    {
+                        id:3,
+                        name: '按钮3'
+                    },
+                    {
+                        id:4,
+                        name: '按钮4'
+                    }
+                ]
+            }
+        },
+        // 子组件， 使用props 创建获取父组件数据的名称
+        // props: ['cmove', 'cmessage']
+        props: {
+            cmove: {
+                type: Array,
+                default() {
+                    return []   // 当属性类型为数组或对象时，必须使用工厂函数， 否则会报错
+                }
+            },
+            cmessage: {
+                type: String,
+                default: 'aaa',
+                // required: true   // 必须传值， 否则报错
+            }
+        },
+        methods: {
+            btnClick(item){
+                // 按钮点击， 子组件发射一个自定义名为 'childBtn'的方法， 并将item传送回去给父组件
+                this.$emit('childbtn', item);
+            }
         }
+        
+        
     })
     
-
+    // 全局组件 cpn
     Vue.component('cpn', cpm)
     // 创建 Vue 实例 app
     const app = new Vue ({
        el: '#app',
        data : {
-           message: 'hah' 
+           message: 'hah' ,
+           move: ['海王','海贼王 ',' 电影']
+       },
+       methods: {
+           btnClick(item){
+               console.log(item)
+           }
        }
     });
     // 创建实例  banner 
