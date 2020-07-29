@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>this.$parent, this.$children, this.$refs, this.$root</title>
+</head>
+<body>
+    <!-- 
+        1. 父组件访问子组件:
+            1. this.$children  
+                1. 返回一个数组，数组中包含了父组件下的所有子组件的对象
+                2. 要获得其中某个子组件 ， 则使用索引值获取  this.$children[0]
+                3. 访问子组件中的 data 数据  this.$children[第N个组件索引].data数据的数据名
+                    如：  this.$children[0].message   
+                4. 使用索引值获取组件对于后期当组件之间插入了其他的组件， 则会发生错误，推荐this.$refs
+            2. this.$refs  
+                1. 返回一个对象
+                2。在需要访问的子组件元素名上添加 ref="访问名"  属性，  如  <cpn ref='aaa'> 
+                3. 父组件通过 this.$refs.aaa  即可访问 cpn 这个组件对象
+                4. 获取组件数据  =>  this.$refs.aaa.message
+                
+        2. 子组件访问父组件
+            1.   this.$parent  => 访问子组件的父组件对象
+            2.   this.$root   =>  访问根组件对象
+
+     -->
+    <div id='app'>
+        <button @click="btnClick">app 按钮</button>
+        <cpn ref="aaa"></cpn>
+    </div>
+     
+    <template id="cpn">
+        <div>
+            <p>这是组件 cpn</p>
+            <button @click="cpnBtn">cpn按钮</button>
+            <ccpn></ccpn>
+        </div>
+    </template>
+
+    <template id="ccpn">
+        <div>
+            <p>这是子组件 ccpn</p>
+            <button @click="ccpnBtn">ccpn按钮</button>
+        </div>
+    </template>
+    <script src='../../vue.js'></script>
+    <script>
+    const app = new Vue ({
+       el: '#app',
+       data : {
+           message: 'hah' 
+       },
+       methods: {
+           btnClick() {
+               console.log('打印app的子组件')
+               console.log(this.$children[0].shopMessage)  // 获取第一个子组件的 data() 中的shopMessage 的值
+               console.log(this.$refs.aaa.shopMessage)  // === this.$children[0].shopMessage
+           }
+       },
+       components: {
+           cpn: {
+               template: "#cpn",
+               data() {
+                   return{
+                       shopMessage: '组件cpn'
+                    }
+               },
+               methods: {
+                   cpnBtn() {
+                       console.log('打印cpn组件的父组件')
+                       console.log(this.$parent)
+                   }
+               },
+               components: {
+                   ccpn: {
+                       template: "#ccpn",
+                       methods: {
+                           ccpnBtn() {
+                               console.log('打印ccpn的根元素')
+                               console.log(this.$root)
+                           }
+                       }
+                   }
+               }
+           }
+       }
+    });
+    </script>
+</body>
+</html>

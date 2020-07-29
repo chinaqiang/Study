@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>父子组件双向绑定 通信</title>
+</head>
+<body>
+    <div id='app'>
+        <cpn
+            :p-number1="num1"
+            :p-number2="num2"
+            @num1change="num1change"
+            @num2change="num2change"></cpn>
+    </div>
+     
+    <template id="child_template">
+        <div>
+            <div>
+                <!-- 
+                    data: 父传子获取的数据
+                    props: 子组件数据
+                 -->
+                <p>data: {{pNumber1}}</p>
+                <p>props: {{number1}}</p>
+                <!-- 当使用双向绑定父传子的数据时， 修改数据会报错 (子组件不允许直接修改父组件的数据) -->
+                <!-- <input type="text" v-model="pNumber1"> -->
+                <!-- <input type="text" :value="number1" @input="number1=$event.target.value"> -->
+                <input type="text" :value="number1" @input="changenum1">
+                
+            </div>
+            <div>
+                <p>data: {{pNumber2}}</p>
+                <p>props: {{number2}}</p>
+                <!-- <input type="text"  v-model="pNumber2"> -->
+                <!-- 
+                    1. 将 v-model="pNumber2" 拆分成两部  v-bind:value  v-on:input
+                    2. 浏览器默认传递 event事件
+                    <input type="text" :value="number2" @input="number2=$event.target.value"> 
+                -->
+                <input type="text" :value="number2" @input="changenum2">
+            </div>
+        </div>
+        
+    </template>
+    <script src='../../vue.js'></script>
+    <script>
+    const app = new Vue ({
+       el: '#app',
+       data : {
+           message: 'hah' ,
+           num1: 0,
+           num2: 0
+       },
+       methods: {
+         num1change(num) {
+             this.num1 = parseInt(num)
+         },
+         num2change(num) {
+             this.num2 = parseInt(num)
+         }  
+       },
+       components: {
+          'cpn': {
+                template: '#child_template',
+                data() {
+                    return {
+                        number1: this.pNumber1,
+                        number2: this.pNumber2
+                    }
+                },
+                props: {
+                    pNumber1: Number,
+                    pNumber2: Number
+                },
+                methods: {
+                    changenum1(event) {
+                        this.number1 = event.target.value
+                        this.$emit('num1change', this.number1)
+                    },
+                    /*
+                        1. 在子组件模版中， @input='changenum2'  当方法不传递实参，则浏览器默认发送一个event, 获取到 :value 的值
+                    */
+                    changenum2(event) {
+                        this.number2 = event.target.value
+                        this.$emit('num2change', this.number2)
+                    }
+                }
+          }
+       }
+    });
+    </script>
+</body>
+</html>
