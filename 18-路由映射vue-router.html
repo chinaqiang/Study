@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>前端路由</title>
+</head>
+<body>
+    <!-- 
+        Vue 声明周期
+            1. new Vue
+            2. beforeCreate
+            3. create()  创建
+            4. mounted()  安装 
+            5. destroyed()  销毁
+
+        1. 安装路 npm install vue-router --save  运行时依赖
+            1. 导入路由对象， 并调用插件 
+                import Router from 'vue-router'  
+                Vue.use(Router)
+            2. 创建路由实例， 并且传入路由映射配置  export default { router=new Router({配置})}
+                1. 配置注册  const routes = []    此处必须使用routes 
+            3. 在Vue 实例挂载创建的路由实例 components: {Router}
+            4. 通过 <router-link to="路劲"> 将组件渲染成 a 标签
+                通过 <router-view> 将组件的内容渲染出来
+
+                1. <router-link>默认以history.pushState() 显示， 修改成不可访问历史 添加replace 属性
+                
+                2. 使用方法 替换 <router-link>标签
+                    <button @click="btn">按钮</button>    $router 活跃路由对象   $route 当前活跃路由
+                    methods: { btn(){ this.$router.push('/home')}}    // 不可 history.push() 跳过路由
+                    methods: { btn(){ this.$router.replace('/home')}}   
+
+                3. 动态路由  => $route
+                    1.  在路由配置信息中 ，某个模块的path 路径设置动态路径{path: '/home/:userid'}
+                    2.  在模版中动态设置路径 =>  <router-link :to="'/home/' + userID"  
+                        👆 userID 是 该模版中的data() 数据 
+                    3. 获取动态路径信息
+                        1.使用 this.$route.params.userid  (此处userid是配置中的路径动态名)
+                            👆 $route 当前活跃路由    params  参数
+
+            5. <keep-alive>   保存状态
+                1. 当不使用<keep-alive>时， vue实例将会频繁创建和销毁。
+                2. 将 <router-view> 插入到<keep-alive>中，将会组织页面创建和销毁 
+                    1. 使用方法 创建路由，
+                        1. 使用 <button @click="homeClick"> 
+                        2. 不使用<router-link> 创建
+                    2. 使用方法传入路由跳转的地址 .  this.$router.push('/home')  或 replace('/home')
+                       并在data() 数据存放 初始进入路径 path: '/home/news'
+                    3. 设置进入活跃路由时， 传入路径
+                        activated() { this.$router.push(this.path)} 
+
+                    4. 记录离开时的最后路径
+                        beforeRouteLeave(to, from, next) { this.path = this.$route.path;next()}
+                        // 此处的route 是离开路由后的活跃路由，  router 属于全局路由
+
+
+                    *** activated() 函数 与 deactivated() 函数只有在 被<keep-alive>包裹时才生效
+
+                
+        2.  路由的懒加载
+            const Home = () => require('路径')
+            const About = () => require('路径')
+            vendor => 第三方
+
+            每一个路由组件 都分开打包，  当需要用到时再加载， 以提升渲染速度
+
+
+        3. 路由嵌套
+            1. 路由配置中{path: ...  component: ..., children: [ {path: .... , component: ...} ] 
+            2. 在路由关系中， 哪个组件需要添加子路由， 就在该配置对象中使用 children 属性 添加
+            3. 子路由的组件按钮 与 模版 在 该路由的父组件里添加<router-link to="/home/news"> <router-view>
+        
+
+        4. 守卫导航 =>  修改浏览器 的  document.titile 显示值    
+            
+            1. beforeEach 前置钩子   
+                必须执行 next()
+            2. afterEach  后置钩子    
+                无需执行 next()
+            (to : 即将要进入的目标的路由对象 )
+            (from: 当前导航即将要离开的路由对象)
+            (next :  调用该方法后  才行进入下一个钩子 )
+            (钩子： hook   =>  回调)
+
+
+            1, 在 router 配置中 index.js  使用 router.beforeEach(to, from, next) => {
+                document.title = to.matched[0].meta.title     // matched 返回一个数组
+                next()   // 必须执行 next , 否则程序无法进行下一步
+            }
+            2. 在路由对象配置中设置 meta值   meta=> 元数据
+                { path: '/home' , component: Home, meta: { title: '首页'} } 
+
+
+
+
+        2.  前端渲染 : 
+            后端渲染 ： => html css jsp(java serve page)  
+
+
+        1. 浏览器改变地址， 不刷新
+            1. 打开开发者模式， 使用history.pushState({}, ' ', '添加的地址名')   保存路径， 可返回
+            2. history.pushState  / back 类似于栈结构  先进后出 
+            3. history.replaceState()   => 替换  不可返回历史路径
+            4. history.go(n)  跳转去某页]     
+
+            5. history.forword()  === history.go(1)
+               history.back()  === history.go(-1)
+     -->
+</body>
+</html>

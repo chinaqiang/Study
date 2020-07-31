@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        1. 插槽 slot 
+            1. 插槽的作用：  替换内容
+            2. 具名插槽:  
+                1. 在模版中创建预留插槽， 并添加 name属性   <slot name="text" />
+                2. 在THML元素中添加替换插槽的值 =>  <cpn> <span slot="text"> ..替换的内容..</span></cpn>
+
+        2. 作用域编译
+
+            父级模板里的所有内容都是在父级作用域中编译的；子模板里的所有内容都是在子作用域中编译的。
+
+            1. 当Vue实例与子组件的 data数据中同时存在Bool这个值， 
+               在app模版中使用的属性值为 Vue实例中的data数据，
+               =>  Vue 实例的数据只能在 #app模版中生效
+               =>  cpn组件的数据  只能在 <template id="cpn"> 的模版中生效   
+                1.  <div id='app'>
+                        <cpn :isShop="Bool"></cpn>   = > 此处Bool =true  === #app.data.Bool
+                     </div>
+
+            2. 插槽的作用域只能在其模版中生效， 要使得父组件获取到子组件的数据
+                1. 在模版中预留插槽， 并添加 :data="books" 属性， 将数据books发射  => v-bind:data  (获取data的数据)
+                2. 在父组件#app中， 通过 v-slot的属性，接收books 数据 <cpn v-slot="slot"> (slot是自定义名)
+                3. 引用接收回来的数据  v-for="item in slot"  此处 slot === books 
+
+            
+     -->
+    <div id='app'>
+        <div>
+            <p>初始值</p>
+            <cpn></cpn>
+        </div>
+       
+        
+        <div>
+            <p>通过 v-slot 属性接收数据</p>
+            <cpn v-slot="a">
+                <span  v-for="item in a">{{item.join(' - ')}}</span>
+            </cpn>
+        </div>
+        <div>
+            <p>通过 $refs 方法接收数据 </p>
+            <cpn ref="aaa">
+                <!-- <span v-for="item in {this.$refs.aaa.books}">{{item.join('*')}}</span> -->
+                <!-- <button @click="btnClick">按钮</button> -->
+                <button @click="btnClick">按钮</button>
+                <span v-for="item in bb">{{item}} -</span>
+            </cpn>
+        </div>
+    </div>
+     <template id="cpn">
+         <div>
+             <slot :data="books">
+                 <ul>
+                     <li v-for="item in books">{{item}}</li>
+                 </ul>
+             </slot>
+             </div>
+     </template>
+    <script src='../../vue.js'></script>
+    <script>
+    const app = new Vue ({
+       el: '#app',
+       data : {
+           message: 'hah' ,
+           Bool: true,
+           bb: []
+       },
+       methods: {
+         btnClick() {
+            this.bb = this.$refs.aaa.books
+         }
+       },
+       components: {
+           cpn: {
+               template: '#cpn',
+               data() {
+                   return {
+                       Bool: false,
+                       books: ['java', 'javascript', 'c++', 'html']
+                   }
+               }
+             
+           }
+       }
+    });
+    </script>
+</body>
+</html>

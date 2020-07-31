@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>import ... from ....</title>
+</head>
+<body>
+    <div>
+        1. 使用原生js 封装一个模块时，当JS文件过多， 而在某个页面使用某个方法时， 会存在 方法名冲突，
+            且方法的值被替换或覆盖。
+        2. 要使得每个JS文件都是一个模块， 则添加 type=model 属性
+            1. <script src=".." type="model"></script>  
+        3. 将js文件封装成模块后， 需要将接口导出
+            1. 导出  export {接口名， 接口名}  =>   导入  import {接口名， 接口名} from '路径'
+            使用👆 方法时，导入的接口名称必须与导出的一致
+
+            2. 导出  export default function(){...}  =>   导入  import 自定义方法名 from '路径'
+            3. 导出 export {... n个接口}    = > 导入  import * as '接口组名: 如aaa' from '路径'
+                使用👆方的方法， 引用接口时 则  aaa.对应接口名 =>  aaa.name  /  aaa.preser
+            
+            4. const 接口名 = require('路径')   导入接口
+    </div>        
+    <script>
+
+        /*  使用以下 方法，  需要有 ES6的底层支撑， 否则无法使用 => 在webpack下可以使用*/
+
+        // ES6模块化规范
+        import home from '../Study/...js'
+        import {age, sum} from '......js'
+        import * as aaa from '...js'    => aaa.age , aaa.name
+
+        // commonJs 模块化规范
+        const age = require('...js')
+
+        export {age, name}
+
+        export default function(){}
+        export default age
+
+        
+    </script>
+</body>
+</html>
