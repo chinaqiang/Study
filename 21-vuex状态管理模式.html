@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>vuex</title>
+</head>
+<body>
+    <div>
+        
+
+        vuex : 状态管理模式   => 响应式
+            1. 什么是状态管理模式
+                1. 多个组件需要使用同一个变量
+                2. 使用一个专门的页面 管理所有共享的数据，  使得其他组件需要使用时， 只需调用该管家即可
+
+        1. vuex 是一个插件， 需要安装  npm install vuex --save 
+        2. 与router 路由相似， 配置状态， 并挂载到App 上
+        3, 创建实例  const store = new Vuex.Store()   => 
+    </div>
+    <script>
+        // 1. 在创建vuex.store() 项目中 , 
+            /* 1. state: {}   储存共享变量     (单一状态树)
+                    1. 单一状态树 : single source of truth  => 单一数据源  => 只允许创建一个store
+                    2. 当初始数据一开始就保存在state中， 这些数据都会被保存到响应式系统中，
+                    当属性发生变化时， 响应式系统会通知所有页面用到该属性的地方让界面发生刷新
+               2. mutations:{}   状态更新  => state 中的数据发生改变，必须通过mutations执行
+                    1. 主要包括两个部分: 
+                        1. 字符串的 事件类型(type)
+                        2.一个回调函数(handler), 该回调函数的第一个参数就是state
+               3. actions   异步操作行为
+               4. getters   === computed 
+                    1.完成各种复杂的逻辑，通过计算，调用函数，最终返回一个值
+               5. modules   模块
+            */
+        
+        /*  
+        1. 储存变量
+            state: {
+                coutnter: 1000   
+            }
+            1. 储存共享变量在state中， 当某个模块需要使用到变量时，  使用{$stroe.state.counter}
+        2. 创建方法
+            mutations: {
+                increment(state) {       
+                    state.counter++      
+                },
+                incrementN(state, n) {
+                    state.counter +=n
+                },
+                addStudent(state, stu) {
+                    state.students.push(stu)
+                }
+            }
+            1. 提取state中的变量， 只需在方法中传入 state的形参, 即可获取共享变量
+            2. 共享方法创建后， 在需要的模块中  methods: {}属性 创建方法，
+                使用  this.$store.commit(mutations属性中的定义的方法名) 
+                如： this.$store.commit('increment') 即可执行
+
+            3. mutations 属性传递参数 =》  参数称为 负载(payload)
+                1. 使得每次点击counter+n    {incrementN(10)}  {incrementN(5)}  
+                    1. 创建incrementN(count){ this.$store.commit('incrementN', count)}
+              
+                3. 添加一个对象进入 addStudent
+                    1. addStudent(){let stu = {name: 'kobe',age:18} this.$store.commit('addStudent',stu)}
+
+            4. mutations 是用于调用方法 改变state中的数据， 可传入多个参数
+
+            5. mutations 的提交风格：
+                1. 传递一个值
+                     // store 状态资源管理页
+                    mutations: {
+                        addStudent(state, count) {
+                            state.counter += count
+                        }
+                    }
+                    // 组件调用页
+                    methods: { 
+                        addStudent(count) {
+                            this.$store.commit('addStudent', count)
+                        }
+                    }
+                2. 传递一个对象
+                    // store 状态资源管理页
+                    mutations: {
+                        addStudent(state, payload) {
+                            state.counter += payload.count
+                        }
+                    }
+                    // 组件调用页
+                    methods: { 
+                        addStudent(count) {
+                            this.$store.commit({
+                                type: 'addStudent',
+                                count
+                            })
+                        }
+                    }
+
+         
+
+        3. 使用异步操作
+            actions: {}
+
+        4. 使用getter 属性， 获取计算属性 , 不改变原数据的值
+            state: {
+                counter: 100,
+                students: [
+                    {name: 'kobe', age: 18, height: 188}
+                    {name: 'kobe', age: 18, height: 188}
+                    {name: 'kobe', age: 18, height: 188}
+                    {name: 'kobe', age: 18, height: 188}
+                ]
+            }
+            getters: {
+                doubleCount(state) {    
+                    return state.counter * state.counter
+                },
+                more20Stud(state) {
+                    return state.students.filter(s => s.age >=20)
+                },
+                more20StudLength(state,getter) {
+                    return getter.more20Stud.length
+                },
+                moreAgeSt(state) {
+                    return function(age){
+                        retrun state.students.filter(s => s.age >= age)
+                    }
+                }
+            }
+            1. 使用getters中的方法， 直接调用 {$store.getters.doubleCount}  ,
+                1. doubleCount  => 调用的结果返回一个数值， 直接通过计算属性显示
+                2. 在getters属性中创建的方法， 形参只有两个， 一个时state, 一个是getters
+                   形参的名字可随意替换，但指向的是state和getters，
+                   当需要在调用时传参进入计算， 则需要通过 方法内 返回一个函数， 内部调用执行 moreAgeSt()
+
+
+        */
+
+    </script>
+</body>
+</html>

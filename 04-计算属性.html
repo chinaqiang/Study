@@ -3,10 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>使用计算属性computed</title>
+    <title>使用计算属性computed </title>
 </head>
 <body>
     <script src="../../vue.js"></script>
+    <div>
+        1. computed可以完成各种复杂的逻辑，包括运算、函数调用等，只要最终返回一个结果就可以
+            computed 具有缓存功能，在系统刚运行的时候调用一次。只有只有当计算结果发生变化才会被调用
+
+        2. methods  一般用于定义的方法需要触发才执行, 且每次调用 都会 重新计算
+    </div>
     <div id="app">
         <!-- 
             1. methods 方法 => 每次调用都会刷新页面

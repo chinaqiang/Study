@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="../../vue.js"></script>
+    <script>
+        /* 1 
+        new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve('hellow wrod')
+                reject('the console err')
+            },1000)
+        }).then(data => {
+                console.log(data)
+                console.log(data)
+                console.log(data)
+            }).catch(err => {
+                console.log(err)
+                console.log(err)
+                console.log(err)
+                console.log(err)
+            }) */
+
+
+        /*  2。执行多次调用 ， */
+        /* new Promise((resolve, reject) => {
+            setTimeout(() => {
+                resolve('aaa')
+                reject('console err')
+            }, 1000)
+        }).then(data => {
+            console.log(data)
+            console.log(data)
+            console.log(data)
+            console.log(data)
+            console.log(data)
+        }),err => {  // 当执行失败， 直接调用 一个实参为err 的匿名函数
+            console.log(err)
+        } */
+
+
+        /* 3 .  
+                1. 执行第一个请求 打印  处理N行代码，打印数据  aaa
+                2. 执行第二个请求 打印  处理N行代码，打印数据  aaa+ '111'
+                3. 执行第三个请求 打印  处理N行代码，打印数据  aaa111 + '222'
+
+
+        */
+
+        // new Promise((resolve, reject) => {
+        //     setTimeout(() => {
+        //         resolve('aaa')
+        //         reject('err')
+        //     },1000)
+        // }).then(data => {
+        //     console.log('第一次打印')
+        //     console.log(data)
+        //     console.log(data)
+        //     console.log(data)
+
+        //     return new Promise(resolve => {
+        //         resolve(data + '111')
+        //     })
+        // }).then(data => {
+        //     console.log('第二次打印')
+        //     console.log(data)
+        //     console.log(data)
+        //     console.log(data)
+
+        //     return new Promise(resolve => {
+        //         resolve(data + '222')
+        //     })
+        // }).then(data => {
+        //     console.log('第三次打印')
+        //     console.log(data)
+        //     console.log(data)
+        //     console.log(data)
+        // }),err => {
+        //     console.log(err)
+        // }
+
+
+        /*
+            4。同时执行两个请求,   
+                1. 当不知两个异步请求 谁先执行， 且是否都执行完毕
+                    1。 在原生JS中， 则需要自定义一个函数，判断 两个异步请求是否都执行  isAjax === true
+                    2. 使用Promise自带的 all 属性 => 返回一个迭代器  
+                    
+                    迭代器 []  => 数组
+        */
+        Promise.all([
+            // 请求一
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve('success project 1')
+                }, 1000)
+            }),
+            // 请求二
+            new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve('success project 2')
+                }, 2000)
+            }) 
+        ]).then(resuccess => {
+            console.log(resuccess)
+        }).catch(err => {
+            console.log(err)
+        })    // 👆  执行成功， 返回一个数组迭代器
+
+
+    </script>
+</body>
+</html>
