@@ -32,8 +32,13 @@
                4. getters   === computed 
                     1.完成各种复杂的逻辑，通过计算，调用函数，最终返回一个值
                5. modules   模块
+            
+               6. 
+                  当文件内容越来越庞大时， 要找寻 某个方法 进行增删查改时 会太过于麻烦
+                  建议对文件进行结构布局
+                   创建对应的 actions, modules, getter, states, mutations 文件
+                   将模块接口导入到 store 仓库的页面中
             */
-        
         /*  
         1. 储存变量
             state: {
@@ -96,11 +101,90 @@
                             })
                         }
                     }
+            6. 响应式添加删除属性
+                1. 一般的在组件中若要给 数据库中的某个值添加属性
+                    state: {
+                        info: { name: 'kobe', age: 18, height: 1555}
+                    }
+                    mutations: {
+                        updata() { 
+                           state.info['address'] = '洛杉矶'   // 这样虽然可以添加属性，但页面不刷新
 
-         
+                           正确方法： 👇 
+                           Vue.set(state.info, 'address', '洛杉矶')  
+                           
+                           delete state.info['address']   // 页面不刷新， 数据能删除
+                           正确方法： 👇
+                           Vue.delete(state.info, 'address')
+                        }
+                    }
+
+                    组件页： 
+                    methods: { 
+                        updata() { this.$store.commit('updata')}
+                        delete() { this.$store.commit('delete')}
+                    }
+                7. mutations:{}   的类型常量
+                   1. 一般的， 为了避免组件在引用 mutations 属性的 自定义名时发生错误，
+                      尽可能的给  mutations 中的方法 设置个常量名并导出
+
+                    1.    mutations: {
+                            [increment](state) {       
+                                state.counter++      
+                            },
+                            [incrementN](state, n) {
+                                state.counter +=n
+                            },
+                            [addStudent](state, stu) {
+                                state.students.push(stu)
+                            }
+                        }
+                        export const increment = 'increment'
+                        export const incrementN = 'incrementN'
+                        export const addStudent = 'addStudent'
+                        
+                    2. 在组件中使用 
+                        import {increment} from '....'
+                        import {incrementN} from '....'
+                        import {addStudent} from '....'
+                    methods: {
+                        increment(count) {
+                            this.$store.commit(increment, count)
+                        }
+                    }
 
         3. 使用异步操作
             actions: {}
+
+            当mustations里拥有异步操作时，必须通过actions来执行
+
+            status => $store.dispatch => mustations => $store.commit => 
+            
+            1. actions 下的函数方法， 形参需要传入 context 
+                1. actions : {
+                    1.    increment(context) {
+                            ....
+                        }
+
+                    2. context解构方式
+                        increment({state, commit, rootState}){    // rootState => 根目录的state
+                            ...... 将context解构成一个对象
+                        }
+                }
+            
+
+
+            2. 对象的解构  => : 
+                    const obj = {
+                        name: 'lk',
+                        height: 188,
+                        age: 18
+                    }
+
+                    const {name, height, age} = obj;
+                    console.log(name)
+                    console.log(height)
+                    console.log(age)
 
         4. 使用getter 属性， 获取计算属性 , 不改变原数据的值
             state: {
@@ -133,7 +217,13 @@
                 2. 在getters属性中创建的方法， 形参只有两个， 一个时state, 一个是getters
                    形参的名字可随意替换，但指向的是state和getters，
                    当需要在调用时传参进入计算， 则需要通过 方法内 返回一个函数， 内部调用执行 moreAgeSt()
-
+            
+            modules: {
+                // modules => 模块 
+                   modules 下拥有state, getter, mutations, actions 方法
+                   使用 modules 下的 属性方法， 除了state 下的数据需要使用
+                    =>  $store.模块名.state.数据名   , 其余获取方法和root一样
+            }
 
         */
 
