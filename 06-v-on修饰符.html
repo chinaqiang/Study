@@ -29,6 +29,12 @@
              <!-- 
                 3. @click.enter 键盘监听
                 4. @click.once 事件只允许触发一次
+
+                5. @click.native  给组件绑定原生事件
+                    1，给vue组件绑定事件时候，必须加上native ，否则会认为监听的是来自Item组件自定义的事件
+
+                    2，等同于在子组件中：  子组件内部处理click事件然后向外发送click事件：$emit("click".fn)
+                    1  <Item @click.native = "shijian()"></Item>
               -->
 
         </div>

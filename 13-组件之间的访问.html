@@ -19,6 +19,8 @@
                 2。在需要访问的子组件元素名上添加 ref="访问名"  属性，  如  <cpn ref='aaa'> 
                 3. 父组件通过 this.$refs.aaa  即可访问 cpn 这个组件对象
                 4. 获取组件数据  =>  this.$refs.aaa.message
+            3. this.$refs.refname.$el   
+                1. 获取组件中的元素
                 
         2. 子组件访问父组件
             1.   this.$parent  => 访问子组件的父组件对象
